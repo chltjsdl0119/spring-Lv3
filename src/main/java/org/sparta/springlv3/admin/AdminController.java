@@ -21,4 +21,8 @@ public class AdminController {
         return adminService.signup(requestDto);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AdminRequestDto requestDto) {
+        return adminService.login(requestDto);
+    }
 }
