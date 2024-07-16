@@ -15,4 +15,9 @@ public class TeacherController {
     public ResponseEntity<String> teacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto) {
         return teacherService.registerTeacher(token, requestDto);
     }
+
+    @PutMapping("/teacher/{id}")
+    public ResponseEntity<String> updateTeacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto, @PathVariable Long id) {
+        return teacherService.updateTeacher(token, requestDto, id);
+    }
 }

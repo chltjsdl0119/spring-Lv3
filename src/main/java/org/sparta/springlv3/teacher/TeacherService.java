@@ -31,4 +31,31 @@ public class TeacherService {
 
         return ResponseEntity.ok("Teacher registered successfully");
     }
+
+    public ResponseEntity<String> updateTeacher(String token, TeacherRequestDto requestDto, Long id) {
+
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> admin = adminRepository.findByEmail(email);
+
+        if (admin.isEmpty()) {
+            return ResponseEntity.badRequest().body("Admin not found");
+        }
+
+        Optional<Teacher> teacherOpt = teacherRepository.findById(id);
+
+        if (teacherOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Teacher not found");
+        }
+
+        Teacher teacher = teacherOpt.get();
+
+        teacher.setCareer(requestDto.getCareer());
+        teacher.setCompany(requestDto.getCompany());
+        teacher.setPhoneNumber(requestDto.getPhoneNumber());
+        teacher.setIntroduction(requestDto.getIntroduction());
+        teacherRepository.save(teacher);
+
+        return ResponseEntity.ok("Teacher updated successfully");
+    }
 }

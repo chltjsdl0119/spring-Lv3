@@ -36,4 +36,20 @@ public class Teacher {
         this.phoneNumber = requestDto.getPhoneNumber();
         this.introduction = requestDto.getIntroduction();
     }
+
+    public void setCareer(String career) {
+        this.career = career;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 }
