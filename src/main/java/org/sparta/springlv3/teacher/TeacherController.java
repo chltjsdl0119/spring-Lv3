@@ -12,12 +12,12 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping("/teacher")
-    public ResponseEntity<String> teacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto) {
+    public ResponseEntity<TeacherResponseDto> teacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto) {
         return teacherService.registerTeacher(token, requestDto);
     }
 
     @PutMapping("/teacher/{id}")
-    public ResponseEntity<String> updateTeacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto, @PathVariable Long id) {
+    public ResponseEntity<TeacherResponseDto> updateTeacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto, @PathVariable Long id) {
         return teacherService.updateTeacher(token, requestDto, id);
     }
 }

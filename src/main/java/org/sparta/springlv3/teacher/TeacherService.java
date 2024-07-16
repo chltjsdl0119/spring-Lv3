@@ -2,8 +2,10 @@ package org.sparta.springlv3.teacher;
 
 import lombok.RequiredArgsConstructor;
 import org.sparta.springlv3.admin.Admin;
+import org.sparta.springlv3.admin.AdminAuthorityEnum;
 import org.sparta.springlv3.admin.AdminRepository;
 import org.sparta.springlv3.jwt.JwtUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,35 +19,47 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final JwtUtil jwtUtil;
 
-    public ResponseEntity<String> registerTeacher(String token, TeacherRequestDto requestDto) {
+    public ResponseEntity<TeacherResponseDto> registerTeacher(String token, TeacherRequestDto requestDto) {
         String email = jwtUtil.extractEmail((token.substring(7)));
 
-        Optional<Admin> admin = adminRepository.findByEmail(email);
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
 
-        if (admin.isEmpty()) {
-            return ResponseEntity.badRequest().body("Admin not found");
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Admin admin = adminOpt.get();
+
+        if (admin.getAuthority() != AdminAuthorityEnum.MANAGER) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         Teacher teacher = new Teacher(requestDto);
         teacherRepository.save(teacher);
 
-        return ResponseEntity.ok("Teacher registered successfully");
+        return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<String> updateTeacher(String token, TeacherRequestDto requestDto, Long id) {
+    public ResponseEntity<TeacherResponseDto> updateTeacher(String token, TeacherRequestDto requestDto, Long id) {
 
         String email = jwtUtil.extractEmail((token.substring(7)));
 
-        Optional<Admin> admin = adminRepository.findByEmail(email);
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
 
-        if (admin.isEmpty()) {
-            return ResponseEntity.badRequest().body("Admin not found");
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Admin admin = adminOpt.get();
+
+        if (admin.getAuthority() != AdminAuthorityEnum.MANAGER) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         Optional<Teacher> teacherOpt = teacherRepository.findById(id);
 
         if (teacherOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Teacher not found");
+            return ResponseEntity.notFound().build();
         }
 
         Teacher teacher = teacherOpt.get();
@@ -56,6 +70,6 @@ public class TeacherService {
         teacher.setIntroduction(requestDto.getIntroduction());
         teacherRepository.save(teacher);
 
-        return ResponseEntity.ok("Teacher updated successfully");
+        return ResponseEntity.ok().build();
     }
 }

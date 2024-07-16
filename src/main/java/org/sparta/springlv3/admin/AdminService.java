@@ -31,7 +31,7 @@ public class AdminService {
 
         adminRepository.save(new Admin(requestDto, password));
 
-        return ResponseEntity.ok().body("관리자 회원가입 성공");
+        return ResponseEntity.ok().body("회원가입 성공");
     }
 
     public ResponseEntity<String> login(AdminRequestDto requestDto) {
@@ -51,6 +51,6 @@ public class AdminService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
 
-        return ResponseEntity.ok().headers(headers).body("관리자 로그인 성공");
+        return ResponseEntity.ok().headers(headers).body("로그인 성공");
     }
 }
