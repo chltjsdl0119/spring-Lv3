@@ -12,7 +12,7 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping("/teacher")
-    public ResponseEntity<TeacherResponseDto> teacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto) {
+    public ResponseEntity<TeacherResponseDto> registerTeacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto) {
         return teacherService.registerTeacher(token, requestDto);
     }
 
