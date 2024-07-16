@@ -15,4 +15,9 @@ public class LectureController {
     public ResponseEntity<LectureResponseDto> registerLecture(@RequestHeader("Authorization") String token, @RequestBody LectureRequestDto requestDto) {
         return lectureService.registerLecture(token, requestDto);
     }
+
+    @PutMapping("/lecture/{id}")
+    public ResponseEntity<LectureResponseDto> updateLecture (@RequestHeader("Authorization") String token, @RequestBody LectureRequestDto requestDto, @PathVariable Long id) {
+        return lectureService.updateLecture(token, requestDto, id);
+    }
 }

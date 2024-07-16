@@ -47,4 +47,20 @@ public class Lecture {
         this.category = requestDto.getCategory();
         this.teacher = requestDto.getTeacher();
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public void setCategory(LectureCategoryEnum category) {
+        this.category = category;
+    }
 }
