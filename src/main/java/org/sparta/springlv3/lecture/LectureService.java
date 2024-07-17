@@ -144,6 +144,10 @@ public class LectureService {
 
         Optional<Lecture> lectureOpt = lectureRepository.findById(id);
 
+        if (lectureOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Lecture lecture = lectureOpt.get();
         lectureRepository.delete(lecture);
 
