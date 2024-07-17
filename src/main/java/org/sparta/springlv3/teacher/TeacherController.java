@@ -20,4 +20,10 @@ public class TeacherController {
     public ResponseEntity<TeacherResponseDto> updateTeacher(@RequestHeader("Authorization") String token, @RequestBody TeacherRequestDto requestDto, @PathVariable Long id) {
         return teacherService.updateTeacher(token, requestDto, id);
     }
+
+    @GetMapping("/teacher/{id}")
+    public ResponseEntity<TeacherResponseDto> getTeacher(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        return teacherService.getTeacher(token, id);
+    }
+
 }

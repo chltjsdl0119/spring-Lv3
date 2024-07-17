@@ -72,4 +72,23 @@ public class TeacherService {
 
         return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
     }
+
+    public ResponseEntity<TeacherResponseDto> getTeacher(String token, Long id) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Teacher> teacherOpt = teacherRepository.findById(id);
+
+        if (teacherOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Teacher teacher = teacherOpt.get();
+
+        return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
+    }
 }
