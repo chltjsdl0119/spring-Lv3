@@ -20,4 +20,9 @@ public class LectureController {
     public ResponseEntity<LectureResponseDto> updateLecture (@RequestHeader("Authorization") String token, @RequestBody LectureRequestDto requestDto, @PathVariable Long id) {
         return lectureService.updateLecture(token, requestDto, id);
     }
+
+    @GetMapping("/lecture/{id}")
+    public ResponseEntity<LectureResponseDto> getLecture( @RequestHeader("Authorization") String token,@PathVariable Long id) {
+        return lectureService.getLecture(token, id);
+    }
 }

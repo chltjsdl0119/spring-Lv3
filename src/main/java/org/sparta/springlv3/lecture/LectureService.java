@@ -71,4 +71,22 @@ public class LectureService {
 
         return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
     }
+
+    public ResponseEntity<LectureResponseDto> getLecture(String token, Long id) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Lecture> lectureOpt = lectureRepository.findById(id);
+        if (lectureOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Lecture lecture = lectureOpt.get();
+
+        return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
+    }
 }
