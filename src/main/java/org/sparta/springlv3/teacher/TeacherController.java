@@ -26,4 +26,9 @@ public class TeacherController {
         return teacherService.getTeacher(token, id);
     }
 
+    @DeleteMapping("/teacher/{id}")
+    public ResponseEntity<TeacherResponseDto> deleteTeacher(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        return teacherService.deleteTeacher(token, id);
+    }
+
 }

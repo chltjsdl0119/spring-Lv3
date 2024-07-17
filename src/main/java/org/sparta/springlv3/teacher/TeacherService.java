@@ -41,7 +41,6 @@ public class TeacherService {
     }
 
     public ResponseEntity<TeacherResponseDto> updateTeacher(String token, TeacherRequestDto requestDto, Long id) {
-
         String email = jwtUtil.extractEmail((token.substring(7)));
 
         Optional<Admin> adminOpt = adminRepository.findByEmail(email);
@@ -88,6 +87,33 @@ public class TeacherService {
         }
 
         Teacher teacher = teacherOpt.get();
+
+        return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
+    }
+
+    public ResponseEntity<TeacherResponseDto> deleteTeacher(String token, Long id) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Admin admin = adminOpt.get();
+
+        if (admin.getAuthority() != AdminAuthorityEnum.MANAGER) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<Teacher> teacherOpt = teacherRepository.findById(id);
+
+        if (teacherOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Teacher teacher = teacherOpt.get();
+        teacherRepository.delete(teacher);
 
         return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
     }
