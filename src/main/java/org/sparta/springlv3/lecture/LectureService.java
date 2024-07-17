@@ -94,7 +94,7 @@ public class LectureService {
         return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<LectureResponseDto>> getLectures(String token, Long teacherId) {
+    public ResponseEntity<List<LectureResponseDto>> getLecturesByTeacherId(String token, Long teacherId) {
         String email = jwtUtil.extractEmail((token.substring(7)));
 
         Optional<Admin> adminOpt = adminRepository.findByEmail(email);
@@ -110,6 +110,19 @@ public class LectureService {
         Teacher teacher = teacherOpt.get();
 
         List<LectureResponseDto> lectures = lectureRepository.findByTeacher(teacher.getName()).stream().map(LectureResponseDto::new).toList();
+
+        return new ResponseEntity<>(lectures, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<LectureResponseDto>> getLecturesByCategory(String token, LectureCategoryEnum category) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<LectureResponseDto> lectures = lectureRepository.findByCategory(category).stream().map(LectureResponseDto::new).toList();
 
         return new ResponseEntity<>(lectures, HttpStatus.OK);
     }

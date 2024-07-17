@@ -29,7 +29,12 @@ public class LectureController {
     }
 
     @GetMapping("/lectures/{teacherId}")
-    public ResponseEntity<List<LectureResponseDto>> getLectures(@RequestHeader("Authorization") String token, @PathVariable Long teacherId) {
-        return lectureService.getLectures(token, teacherId);
+    public ResponseEntity<List<LectureResponseDto>> getLecturesByTeacherId(@RequestHeader("Authorization") String token, @PathVariable Long teacherId) {
+        return lectureService.getLecturesByTeacherId(token, teacherId);
+    }
+
+    @GetMapping("/lectures")
+    public ResponseEntity<List<LectureResponseDto>> getLecturesByCategory(@RequestHeader("Authorization") String token, @RequestParam LectureCategoryEnum category) {
+        return lectureService.getLecturesByCategory(token, category);
     }
 }
