@@ -37,7 +37,7 @@ public class LectureService {
         Lecture lecture = new Lecture(requestDto);
         lectureRepository.save(lecture);
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
     }
 
     public ResponseEntity<LectureResponseDto> updateLecture(String token, LectureRequestDto requestDto, Long id) {
@@ -69,6 +69,6 @@ public class LectureService {
         lecture.setCategory(requestDto.getCategory());
         lectureRepository.save(lecture);
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
     }
 }

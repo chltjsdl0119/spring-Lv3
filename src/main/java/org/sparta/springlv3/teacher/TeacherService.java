@@ -37,7 +37,7 @@ public class TeacherService {
         Teacher teacher = new Teacher(requestDto);
         teacherRepository.save(teacher);
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
     }
 
     public ResponseEntity<TeacherResponseDto> updateTeacher(String token, TeacherRequestDto requestDto, Long id) {
@@ -70,6 +70,6 @@ public class TeacherService {
         teacher.setIntroduction(requestDto.getIntroduction());
         teacherRepository.save(teacher);
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(new TeacherResponseDto(teacher),HttpStatus.OK);
     }
 }
