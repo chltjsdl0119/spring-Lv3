@@ -37,4 +37,9 @@ public class LectureController {
     public ResponseEntity<List<LectureResponseDto>> getLecturesByCategory(@RequestHeader("Authorization") String token, @RequestParam LectureCategoryEnum category) {
         return lectureService.getLecturesByCategory(token, category);
     }
+
+    @DeleteMapping("/lecture/{id}")
+    public ResponseEntity<LectureResponseDto> deleteLecture(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        return lectureService.deleteLecture(token, id);
+    }
 }

@@ -126,4 +126,27 @@ public class LectureService {
 
         return new ResponseEntity<>(lectures, HttpStatus.OK);
     }
+
+    public ResponseEntity<LectureResponseDto> deleteLecture(String token, Long id) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Admin admin = adminOpt.get();
+
+        if (admin.getAuthority() != AdminAuthorityEnum.MANAGER) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<Lecture> lectureOpt = lectureRepository.findById(id);
+
+        Lecture lecture = lectureOpt.get();
+        lectureRepository.delete(lecture);
+
+        return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
+    }
 }
