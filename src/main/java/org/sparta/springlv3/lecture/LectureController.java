@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -24,5 +26,10 @@ public class LectureController {
     @GetMapping("/lecture/{id}")
     public ResponseEntity<LectureResponseDto> getLecture( @RequestHeader("Authorization") String token,@PathVariable Long id) {
         return lectureService.getLecture(token, id);
+    }
+
+    @GetMapping("/lectures/{teacherId}")
+    public ResponseEntity<List<LectureResponseDto>> getLectures(@RequestHeader("Authorization") String token, @PathVariable Long teacherId) {
+        return lectureService.getLectures(token, teacherId);
     }
 }

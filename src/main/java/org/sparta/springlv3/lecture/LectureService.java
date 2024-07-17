@@ -5,10 +5,13 @@ import org.sparta.springlv3.admin.Admin;
 import org.sparta.springlv3.admin.AdminAuthorityEnum;
 import org.sparta.springlv3.admin.AdminRepository;
 import org.sparta.springlv3.jwt.JwtUtil;
+import org.sparta.springlv3.teacher.Teacher;
+import org.sparta.springlv3.teacher.TeacherRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,7 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
     private final AdminRepository adminRepository;
+    private final TeacherRepository teacherRepository;
     private final JwtUtil jwtUtil;
 
     public ResponseEntity<LectureResponseDto> registerLecture(String token, LectureRequestDto requestDto) {
@@ -88,5 +92,25 @@ public class LectureService {
         Lecture lecture = lectureOpt.get();
 
         return new ResponseEntity<>(new LectureResponseDto(lecture), HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<LectureResponseDto>> getLectures(String token, Long teacherId) {
+        String email = jwtUtil.extractEmail((token.substring(7)));
+
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
+        if (adminOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Teacher> teacherOpt = teacherRepository.findById(teacherId);
+        if (teacherOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Teacher teacher = teacherOpt.get();
+
+        List<LectureResponseDto> lectures = lectureRepository.findByTeacher(teacher.getName()).stream().map(LectureResponseDto::new).toList();
+
+        return new ResponseEntity<>(lectures, HttpStatus.OK);
     }
 }
